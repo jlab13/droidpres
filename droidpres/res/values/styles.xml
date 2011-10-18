@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *******************************************************************************
+ * Copyright (c) 2010 Eugene Vorobkalo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v2.0
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * 
+ * Contributors:
+ *     Eugene Vorobkalo - initial API and implementation
+ ******************************************************************************/
+ -->
+<resources>
+	<style name="ButtonBar"> 
+		<item name="android:paddingTop">5dip</item> 
+		<item name="android:paddingLeft">4dip</item> 
+		<item name="android:paddingRight">4dip</item> 
+		<item name="android:paddingBottom">1dip</item> 
+		<item name="android:background">@android:drawable/bottom_bar</item> 
+	</style>	
+</resources>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *******************************************************************************
+ * Copyright (c) 2010 Eugene Vorobkalo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v2.0
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * 
+ * Contributors:
+ *     Eugene Vorobkalo - initial API and implementation
+ ******************************************************************************/
+ -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
+	<ListView android:id="@android:id/list" android:layout_width="fill_parent"
+		android:layout_weight="1" android:layout_height="wrap_content"
+		android:scrollbarStyle="insideInset"
+		android:fastScrollEnabled="true" 
+		android:textFilterEnabled="true" />
+		
+	<TextView android:id="@id/android:empty"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_weight="1" android:gravity="center" android:text="@string/msg_NoProduct" />
+
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:background="@drawable/list_bar"
+		android:paddingTop="2px">
+			
+			<!-- <ImageButton android:id="@+id/btSaveDoc"
+				android:layout_width="wrap_content"	android:layout_height="wrap_content"
+				android:src="@drawable/save"/>  -->
+			<ToggleButton  android:id="@+id/tbProdInBox"
+				android:layout_width="wrap_content"	android:layout_height="wrap_content"
+				android:textOn="@string/lb_qty_box"
+				android:textOff="@string/lb_qty" android:layout_gravity="center_vertical"/>
+			<ToggleButton  android:id="@+id/tbProdPresence"
+				android:layout_width="wrap_content"	android:layout_height="wrap_content"
+				android:textOn="@string/lb_presence"
+				android:textOff="@string/lb_all" android:layout_gravity="center_vertical"/>
+
+			<LinearLayout
+				android:layout_width="wrap_content"	android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:layout_weight="1"
+				android:padding="3dp">
+				<TextView
+					android:layout_width="fill_parent" android:layout_height="wrap_content"
+					android:gravity="right"
+					android:text="@string/lb_total"
+					android:textColor="#FFFFFF" android:layout_marginRight="5px"/>
+				<TextView android:id="@+id/tvDocTotal"
+					android:layout_width="fill_parent" android:layout_height="wrap_content"
+					android:gravity="right"
+					android:textStyle="bold"
+					android:textColor="#00FFFF"/>
+			</LinearLayout>
+	</LinearLayout>
+</LinearLayout>

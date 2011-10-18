@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+*******************************************************************************
+ * Copyright (c) 2010 Eugene Vorobkalo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v2.0
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * 
+ * Contributors:
+ *     Eugene Vorobkalo - initial API and implementation
+ ******************************************************************************/
+ -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="@string/setup_setup"> 
+	    <!-- 
+	    <Preference
+      		android:key="@string/DEVICE_ID" 
+      		android:title="@string/setup_device_id"/>
+      	 --> 
+	    <EditTextPreference
+      		android:key="@string/AGENT_ID" 
+      		android:title="@string/setup_agent_id"
+   			android:summary="@string/setup_clic_to_popup_entry"/>
+		<EditTextPreference 
+      		android:key="@string/CURRENCY" 
+      		android:title="@string/setup_currency" 
+      		android:summary="@string/setup_clic_to_popup_entry" 
+      		android:defaultValue="грн."/>   			
+	    <EditTextPreference
+      		android:key="@string/ADMIN_PASSWORD" 
+      		android:title="@string/setup_admin_passwd"
+   			android:summary="@string/setup_clic_to_popup_entry"
+      		android:defaultValue="adm"/>
+    </PreferenceCategory> 
+	
+	<PreferenceCategory android:title="@string/setup_transfer"> 
+   		<EditTextPreference
+      			android:key="@string/TRANSFER_WIFI_SERVER" 
+      			android:title="@string/setup_transfer_wifi" 
+      			android:summary="@string/setup_transfer_url" /> 
+   		<EditTextPreference
+      			android:key="@string/TRANSFER_MOBILE_SERVER" 
+      			android:title="@string/setup_transfer_mobile" 
+      			android:summary="@string/setup_transfer_url"/> 
+   		<EditTextPreference
+      			android:key="@string/HTTP_LOGIN" 
+      			android:title="@string/setup_http_login" 
+      			android:summary="@string/setup_clic_to_popup_entry" 
+      			android:defaultValue="DroidPres"/> 
+   		<EditTextPreference
+      			android:key="@string/HTTP_PASSWD" 
+      			android:title="@string/setup_http_passwd" 
+      			android:summary="@string/setup_clic_to_popup_entry" 
+      			android:defaultValue="ohjaTho5gah2Ohyoh5Ug"/> 
+	</PreferenceCategory>
+
+	<PreferenceCategory android:title="@string/setup_gps"> 
+	    <CheckBoxPreference
+      		android:key="@string/GPSLOCATION"
+      		android:title="@string/setup_gpslocation"
+   			android:summary="@string/setup_gpslocation_summary"
+   			android:defaultValue="true"/>
+	    <CheckBoxPreference
+      		android:key="@string/NOSTARTWITHOUTGPS"
+      		android:title="@string/setup_nostartwithoutgps"
+   			android:summary="@string/setup_nostartwithoutgps_summary"
+   			android:dependency="@string/GPSLOCATION"
+   			android:defaultValue="true"/>
+   		<ListPreference 
+      		android:key="@string/GPSACCURACY"
+      		android:title="@string/setup_gpsaccuracy"
+   			android:summary="@string/setup_gpsaccuracy_summary"
+   			android:entries="@array/gpsAccuracy"
+   			android:entryValues="@array/gpsAccuracyValues" 
+   			android:dependency="@string/GPSLOCATION"
+   			android:defaultValue="50" />
+    </PreferenceCategory> 
+
+	<PreferenceCategory android:title="База данных"> 
+   		<Preference
+      			android:key="clean_doc" 
+      			android:title="Очистить документы" 
+      			android:summary="Удалить все документы"/> 
+   		<Preference
+      			android:key="clean_ref" 
+      			android:title="Очистить справочники" 
+      			android:summary="Удалить все записи из справочников"/>
+   		<Preference
+      			android:key="show_location" 
+      			android:title="Show location" 
+      			android:summary="Show location table"/> 
+      			 
+	</PreferenceCategory>
+</PreferenceScreen>

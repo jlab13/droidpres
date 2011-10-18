@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *******************************************************************************
+ * Copyright (c) 2010 Eugene Vorobkalo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v2.0
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * 
+ * Contributors:
+ *     Eugene Vorobkalo - initial API and implementation
+ ******************************************************************************/
+ -->
+<resources>
+	<string-array name="itemMain">
+		<item>Торговые точки</item>
+		<item>Обмен данными</item>
+		<item>Отчеты</item>
+		<item>Телефон</item>
+	</string-array>
+
+	<string-array name="itemNetType">
+		<item>Мобильная сеть</item>
+		<item>WiFi сеть</item>
+	</string-array>
+
+	<string-array name="itemDocState">
+		<item>В работе</item>
+		<item>Готов к отправке</item>
+	</string-array>
+
+	<string-array name="DocState">
+		<item>В работе</item>
+		<item>Готов к отправке</item>
+		<item>Отправлен</item>
+	</string-array>
+	
+	<string-array name="gpsAccuracy">
+		<item>Низкая</item>
+		<item>Средняя</item>
+		<item>Высокая</item>
+	</string-array>
+
+	<string-array name="gpsAccuracyValues">
+		<item>300</item>
+		<item>50</item>
+		<item>20</item>
+	</string-array>
+	
+
+    <string name="ok">Да</string>
+    <string name="cancel">Отмена</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+
+    <string name="lb_search">Поиск</string>
+    <string name="lb_clean">Очистить</string>
+    <string name="lb_save">Сохранить</string>
+    <string name="lb_edit">Редактировать</string>
+    <string name="lb_delete">Удалить</string>
+    <string name="lb_all_outles">Все торговые точки</string>
+    <string name="lb_pres">Заказ</string>
+    <string name="lb_ven">Отгрузка</string>
+    <string name="lb_resend">Отправить повторно</string>
+    <string name="lb_export">Отправить данные</string>
+    <string name="lb_import">Обновить данные</string>
+    <string name="lb_documents">Документы</string>
+    <string name="lb_doc">док.</string>
+    <string name="lb_documents_status">Статус документа</string>
+    <string name="lb_presence">есть</string>
+    <string name="lb_all">все</string>
+    <string name="lb_total">Итого:</string>
+    <string name="lb_description">Комментарий:</string>
+    <string name="lb_typedoc">Тип документа:</string>
+    <string name="lb_transfer_type">Укажите тип соединения:</string>
+    <string name="lb_title_doc_params">Параметры документа</string>
+    <string name="lb_title_qty">Количество (шт.)</string>
+    <string name="lb_title_qty_box">Количество (уп.)</string>
+    <string name="lb_qty_box">уп.</string>
+    <string name="lb_qty">шт.</string>
+    <string name="lb_transfer">Обмен данными</string>
+    <string name="lb_setup_root">Настройки администратора</string>
+    <string name="lb_setup">Настройки</string>
+    <string name="lb_clitent_list">Торговые точки</string>
+    <string name="lb_product_group">Категория товара</string>
+    <string name="lb_client_group">Категория торговой точки</string>
+    <string name="lb_send_doc_count">Отправленных документов: %s</string>
+    <string name="lb_send_doc_sum">На сумму: %s</string>
+	<string name="lb_new_doc">Новый документ</string>
+	<string name="lb_info">Информация</string>
+	<string name="lb_dey">день.</string>
+	<string name="lb_dey1">дня.</string>
+	<string name="lb_deys">дней.</string>
+    <string name="lb_doc_status_edit">В работе</string>
+    <string name="lb_doc_status_preparesend">Готов к отправке</string>
+	<string name="lb_on_gps">Включить GPS</string>
+	<string name="lb_gps_location">GPS Мониторинг</string>
+	
+	<string name="lb_cl_id">Код</string>
+	<string name="lb_cl_debtsumm1">Задолженность по 1-й форме оплаты</string>
+	<string name="lb_cl_debtsumm2">Задолженность по 2-й форме оплаты</string>
+	<string name="lb_cl_address">Адрес</string>
+	<string name="lb_cl_phone">Номер телефона</string>
+	<string name="lb_cl_fname">Полное наименование</string>
+	<string name="lb_cl_addresslaw">Юридический адрес</string>
+
+    <string name="setup_clic_to_popup_entry">Нажмите чтобы ввести значение</string>
+    <string name="setup_transfer_wifi">WiFi сеть</string>
+    <string name="setup_transfer_url">Адрес сервера обмена данными</string>
+    <string name="setup_transfer_mobile">Мобильная сеть</string>
+    <string name="setup_transfer">Параметры обмена данными</string>
+    <string name="setup_setup">Общие настройки</string>
+    <string name="setup_gui">Общие интерфейса</string>
+    <string name="setup_gps">Настройки GPS</string>
+    <string name="setup_vibration_on_qty">Вибрация</string>
+    <string name="setup_vibration_on_qty_summary">Вибрация при вводе кол. в док.</string>
+    <string name="setup_agent_id">ID Агента</string>
+    <string name="setup_currency">Обозначение валюты</string>
+    <string name="setup_admin_passwd">Пароль администратора</string>
+    <string name="setup_http_login">Логин обмена данными</string>
+    <string name="setup_http_passwd">Пароль обмена данными</string>
+    <string name="setup_nostartwithoutgps">Не запускать без GPS</string>
+    <string name="setup_nostartwithoutgps_summary">Запретить запуск программы если GPS выключен</string>
+    <string name="setup_gpslocation">Записать координаты GPS</string>
+    <string name="setup_gpslocation_summary">Отслеживать перемещение устройства по GPS</string>
+    <string name="setup_gpsaccuracy">Точность GPS</string>
+    <string name="setup_gpsaccuracy_summary">Влияет на заряд батареи</string>
+    
+    <string name="msg_TransferDataPleaseWait">Обмен данными подождите пожалуйста!</string>
+    <string name="msg_QyerySaveDocument">Данный документ не сохранен. Если Вы откажетесь документ будет безвозвратно утерян.\n\nСохранить документ?</string>
+    <string name="msg_GetRefClient">Запрос справочника клиентов.</string>
+    <string name="msg_GetRefClientGroup">Запрос справочника категории клиентов.</string>
+    <string name="msg_GetRefProduct">Запрос справочника продукции.</string>
+    <string name="msg_GetRefProductGroup">Запрос справочника категории продукции.</string>
+    <string name="msg_GetRefTypeDoc">Запрос справочника типов документа.</string>
+    <string name="msg_StartImport">Старт обновления справочников:\n%s</string>
+    <string name="msg_StopImport">Обновление справочников выполнено.</string>
+    <string name="msg_StartExport">Старт отправки документов.</string>
+    <string name="msg_StopExport">Отправка документов выполнена.</string>
+    <string name="msg_SendDocCount">Документов отправлено: %d</string>
+    <string name="msg_ReturNRecords">Получено %d записи(ей).</string>
+    <string name="msg_UpdateNRecords">Обработано %d записи(ей).</string>
+    <string name="msg_NoDoc">Нет документов</string>
+    <string name="msg_NoClient">Нет торговых точек</string>
+    <string name="msg_NoProduct">Нет продукции</string>
+    <string name="msg_AreUpdateApk">Получено обновление программы: %d byte.</string>
+    <string name="msg_UpdateApk">Сейчас будет запущенно обновление программы. На вопросы установщика ответьте положительно и подтвердите установку.</string>
+    <string name="msg_NoOnGPS">Запрещен запуск программы без включенного GPS.\nПерейти к настройкам?</string>
+    
+    <string name="msg_WiFiState_DISABLING">Выключаю WiFi адаптер ...</string>
+    <string name="msg_WiFiState_DISABLED">WiFi адаптер выключен</string>
+    <string name="msg_WiFiState_ENABLING">Включаю WiFi адаптер ...</string>
+    <string name="msg_WiFiState_ENABLED">WiFi адаптер включен</string>
+    <string name="msg_WiFiState_UNKNOWN">Неизвестный статус WiFi адаптера</string>
+
+    <string name="msg_NetworkState_CONNECTING">Соединение ...</string>
+    <string name="msg_NetworkState_OBTAINING_IPADDR">Получаю IP адрес ...</string>
+    <string name="msg_NetworkState_DISCONNECTING">Отсоединение ...</string>
+    <string name="msg_NetworkState_DISCONNECTED">Отсоединен</string>
+    <string name="msg_NetworkState_FAILED">Соединение не удалось</string>
+    <string name="msg_NetworkState_CONNECTED">Соединен с %s</string>
+
+    
+    <string name="err_ErrorDBOpen">Не возможно открыть базу данных.</string>
+    <string name="err_NumberFormatException">Ошибка преобразования числа.</string>
+    <string name="err_NoSetAgentID">Не определен код агента!\nОбратитесь к системному администратору.</string>
+    <string name="err_ServerPort">Не указан адрес сервера обмена данными!\nЗайдите в настройки программы.</string>
+    <string name="err_XMLRPCFault">XMLRPC ошибка данных.\nОбратитесь к системному администратору.</string>
+    <string name="err_HttpHostConnectException">Ошибка соединения с сервером.</string>
+    <string name="err_SocketTimeoutException">Сервер обмена данными на данный момент не доступен.\nПовторите попытку позже.</string>
+    <string name="err_XMLRPCException">Ошибка при обмене данными с сервером.</string>
+    <string name="err_UnknownException">Неизвестная ошибка.</string>
+    <string name="err_IOException">Ошибка ввода вывода.</string>
+    <string name="err_NameNotFoundException">Не доступна версия приложения.</string>
+    
+</resources>

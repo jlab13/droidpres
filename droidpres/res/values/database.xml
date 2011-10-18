@@ -1,0 +1,138 @@
+<!-- 
+*******************************************************************************
+ * Copyright (c) 2010 Eugene Vorobkalo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v2.0
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * 
+ * Contributors:
+ *     Eugene Vorobkalo - initial API and implementation
+ ******************************************************************************/
+ -->
+
+<resources>
+<string-array name="ddl_of_database">
+
+<item>
+CREATE TABLE IF NOT EXISTS "typedoc" (
+  "_id" INTEGER NOT NULL PRIMARY KEY, 
+  "name" VARCHAR(15), 
+  "days" SMALLINT, 
+  "discount" FLOAT, 
+  "paytype1or2" SMALLINT, 
+  "paytype" SMALLINT);
+</item>
+
+<item>
+CREATE TABLE IF NOT EXISTS "client" (
+  "_id" INTEGER NOT NULL PRIMARY KEY, 
+  "name" VARCHAR(35), 
+  "name_case" VARCHAR(35), 
+  "debtsumm1" CURRENCY,
+  "debtdays1" SMALLINT, 
+  "debtsumm2" CURRENCY,
+  "debtdays2" SMALLINT, 
+  "stopshipment" BOOLEAN DEFAULT (0),
+  "category_id" INTEGER, 
+  "address" VARCHAR(84), 
+  "defaultdiscount" FLOAT, 
+  "phone" VARCHAR(15), 
+  "taxcode" VARCHAR(15), 
+  "taxnum" VARCHAR(10), 
+  "okpo" VARCHAR(10), 
+  "mfo" VARCHAR(15), 
+  "bankname" VARCHAR(50), 
+  "fname" VARCHAR(84), 
+  "addresslaw" VARCHAR(84), 
+  "clientgroup_id" INTEGER, 
+  "parent_id" INTEGER);
+</item>
+
+<item>
+CREATE TABLE IF NOT EXISTS "product" (
+  "_id" INTEGER NOT NULL PRIMARY KEY, 
+  "name" VARCHAR(35), 
+  "name_case" VARCHAR(35), 
+  "productgroup_id" INTEGER, 
+  "sortorder" INTEGER, 
+  "casesize" FLOAT, 
+  "price" CURRENCY,
+  "available" FLOAT);
+</item>
+
+<item>
+CREATE INDEX IF NOT EXISTS "goodsorder" ON "product" ("sortorder");
+</item>
+
+<item>
+CREATE TABLE IF NOT EXISTS "product_group" (
+  "_id" INTEGER NOT NULL PRIMARY KEY, 
+  "name" VARCHAR(35) NOT NULL);
+</item>
+
+<item>
+CREATE TABLE IF NOT EXISTS "client_group" (
+  "_id" INTEGER NOT NULL PRIMARY KEY, 
+  "name" VARCHAR(35) NOT NULL);
+</item>
+
+<item>
+CREATE TABLE IF NOT EXISTS "document" (
+  "_id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
+  "presventype" SMALLINT NOT NULL, 
+  "client_id" INTEGER CONSTRAINT "fk_client" REFERENCES "client"("_id"), 
+  "docdate" DATE DEFAULT (CURRENT_DATE), 
+  "doctime" TIME DEFAULT (CURRENT_TIME), 
+  "discount" FLOAT, 
+  "itemcount" FLOAT, 
+  "mainsumm" CURRENCY, 
+  "description" VARCHAR(35), 
+  "paymentdate" DATE, 
+  "typedoc_id" INTEGER CONSTRAINT "fk_typedoc" REFERENCES "typedoc"("_id"), 
+  "paytype" INTEGER, 
+  "docstate" SMALLINT DEFAULT (0), 
+  "sumwithoutvat" CURRENCY, 
+  "sumwithvat" CURRENCY, 
+  "regnum" VARCHAR(15),
+  "central_id" INTEGER);
+</item>
+
+<item>
+CREATE TRIGGER IF NOT EXISTS "bd_document"
+BEFORE DELETE
+ON "document"
+BEGIN
+     delete from document_det where document_id = old._id;
+END;
+</item>
+
+<item>
+CREATE TABLE IF NOT EXISTS "document_det" (
+  "_id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
+  "document_id" INTEGER NOT NULL CONSTRAINT "fk_dokument" REFERENCES "document"("_id"), 
+  "product_id" INTEGER NOT NULL CONSTRAINT "fk_product" REFERENCES "product"("_id"), 
+  "qty" FLOAT NOT NULL, 
+  "discount" FLOAT DEFAULT (0), 
+  "price" CURRENCY, 
+  "pricewithoutvat" CURRENCY, 
+  "pricewithvat" CURRENCY);
+</item>
+
+<item>
+DROP TABLE IF EXISTS "location";
+</item>
+
+<item>
+CREATE TABLE IF NOT EXISTS "location" (
+  "date_location" TIMESTAMP PRIMARY KEY DEFAULT (datetime(\'now\',\'localtime\')), 
+  "provider" VARCHAR(10), 
+  "lat" INTEGER, 
+  "lon" INTEGER, 
+  "accuracy" INTEGER 
+);
+</item>
+
+
+</string-array>
+</resources>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *******************************************************************************
+ * Copyright (c) 2010 Eugene Vorobkalo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v2.0
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * 
+ * Contributors:
+ *     Eugene Vorobkalo - initial API and implementation
+ ******************************************************************************/
+ -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="fill_parent" android:layout_width="fill_parent"
+	android:orientation="vertical" android:padding="10dip">
+		<TextView android:id="@+id/tvQtyGoodsInfo"
+			android:layout_height="wrap_content" android:layout_width="fill_parent"
+			android:layout_span="3"
+			android:layout_weight="1"
+			android:layout_marginBottom="1px"
+			android:singleLine="true"
+			android:text="Test message"/>
+		<LinearLayout
+			android:layout_height="wrap_content" android:layout_width="fill_parent"
+			android:orientation="horizontal">
+			<EditText android:id="@+id/eQty"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:layout_weight="1"
+				android:gravity="right"
+				android:textColor="#0000ff"
+				android:textStyle="bold"
+				android:textSize="25sp"
+				android:inputType="numberDecimal"
+				android:focusableInTouchMode="false"
+				android:clickable="false"
+				android:focusable="false"/>
+			<Button android:id="@+id/btBackspace"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:textStyle="bold"
+				android:textSize="25dip"
+				android:text="&lt;"
+				android:minWidth="@dimen/qty_button_width"/>
+		</LinearLayout>
+		<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="horizontal">
+			<Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:minWidth="@dimen/qty_button_width"
+				android:layout_weight="1" android:text="0" android:id="@+id/btQty0" android:textStyle="bold" android:textSize="25sp"/>
+			<Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:minWidth="@dimen/qty_button_width"
+				android:layout_weight="1" android:text="1" android:id="@+id/btQty1" android:textStyle="bold" android:textSize="25sp"/>
+			<Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:minWidth="@dimen/qty_button_width"
+				android:layout_weight="1" android:text="2" android:id="@+id/btQty2" android:textStyle="bold" android:textSize="25sp"/>
+			<Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:minWidth="@dimen/qty_button_width"
+				android:layout_weight="1" android:text="3" android:id="@+id/btQty3" android:textStyle="bold" android:textSize="25sp"/>
+			<Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:minWidth="@dimen/qty_button_width"
+				android:layout_weight="1" android:text="4" android:id="@+id/btQty4" android:textStyle="bold" android:textSize="25sp"/>
+		</LinearLayout>
+		<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="horizontal">
+			<Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:minWidth="@dimen/qty_button_width"
+				android:layout_weight="1" android:text="5" android:id="@+id/btQty5" android:textStyle="bold" android:textSize="25sp"/>
+			<Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:minWidth="@dimen/qty_button_width"
+				android:layout_weight="1" android:text="6" android:id="@+id/btQty6" android:textStyle="bold" android:textSize="25sp"/>
+			<Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:minWidth="@dimen/qty_button_width"
+				android:layout_weight="1" android:text="7" android:id="@+id/btQty7" android:textStyle="bold" android:textSize="25sp"/>
+			<Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:minWidth="@dimen/qty_button_width"
+				android:layout_weight="1" android:text="8" android:id="@+id/btQty8" android:textStyle="bold" android:textSize="25sp"/>
+			<Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:minWidth="@dimen/qty_button_width"
+				android:layout_weight="1" android:text="9" android:id="@+id/btQty9" android:textStyle="bold" android:textSize="25sp"/>
+		</LinearLayout>
+		<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="horizontal">
+			<Button android:layout_height="wrap_content" android:layout_width="wrap_content"
+				android:layout_weight="1" android:text="." android:id="@+id/btQtyPoint" android:textStyle="bold" android:textSize="25sp"/>
+			<Button android:layout_height="wrap_content" android:layout_width="wrap_content"
+				android:layout_weight="1" android:text="C" android:textColor="#ff0000" android:textStyle="bold" android:id="@+id/btQtyC" android:textSize="25sp"/>
+			<Button android:layout_height="wrap_content" android:layout_width="wrap_content"
+				android:layout_weight="1" android:id="@+id/bOK" android:textSize="25sp" android:text="V" android:textColor="#005f00" android:textStyle="bold"/>
+			<Button android:layout_height="wrap_content" android:layout_width="wrap_content"
+				android:layout_weight="1" android:id="@+id/bCancel" android:textSize="25sp" android:text="X" android:textStyle="bold"/>
+		</LinearLayout>
+</LinearLayout>

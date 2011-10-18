@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="org.droidpres"
+	android:versionCode="24"
+	android:versionName="1.0">
+
+    <uses-sdk android:minSdkVersion="3" android:targetSdkVersion="4"/>
+
+	
+	<application android:icon="@drawable/icon" android:label="@string/app_name"
+		android:description="@string/app_description">
+
+		<activity android:name=".activity.MainActivity" android:label="@string/app_name"
+			android:configChanges="orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+		
+		<activity android:name=".activity.ClientListActivity" android:label="@string/lb_clitent_list" 
+			android:configChanges="orientation|keyboardHidden"/>
+
+		<activity android:name=".activity.ProductListActivity"
+			android:configChanges="orientation|keyboardHidden"/>
+		
+		<activity android:name=".activity.DocumentListActivity" android:label="@string/lb_documents"
+			android:configChanges="orientation|keyboardHidden"/>
+
+		<activity android:name=".activity.SetupRootActivity" android:label="@string/lb_setup_root"
+			android:configChanges="orientation|keyboardHidden"/>
+		
+		<activity android:name=".activity.SetupActivity" android:label="@string/lb_setup"
+			android:configChanges="orientation|keyboardHidden"/>
+		
+		<activity android:name=".activity.TransferActivity" android:label="@string/lb_transfer" 
+			android:configChanges="orientation|keyboardHidden"/>
+		
+		<activity android:name=".activity.TableActivity" android:label="Location"
+			android:configChanges="keyboardHidden"/>
+
+		<activity android:name=".activity.InputQtyActivity" android:theme="@android:style/Theme.Dialog"
+			android:configChanges="keyboardHidden"/>
+
+		
+		<receiver android:name=".receiver.OnAlarmReceiver"
+			android:process=":remote" />
+
+		<receiver android:name=".receiver.OnBootReceiver"
+			android:enabled="true"
+			android:exported="false">
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED"/>
+			</intent-filter>
+		</receiver>
+
+		<service android:name=".service.LocationService" android:enabled="true" />
+    </application>
+    
+	<supports-screens 
+		android:smallScreens="true"
+		android:normalScreens="true"
+		android:largeScreens="true"
+		android:anyDensity="true"/>
+
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.VIBRATE"/>
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+	<uses-permission android:name="android.permission.WAKE_LOCK"/>
+</manifest> 

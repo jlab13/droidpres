@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *******************************************************************************
+ * Copyright (c) 2010 Eugene Vorobkalo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v2.0
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * 
+ * Contributors:
+ *     Eugene Vorobkalo - initial API and implementation
+ ******************************************************************************/
+ -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="fill_parent" android:layout_width="fill_parent"
+	android:orientation="vertical">
+	<ListView android:id="@android:id/list"
+		android:layout_width="fill_parent"
+		android:layout_weight="1" android:layout_height="wrap_content"
+		android:scrollbarStyle="insideInset">
+	</ListView>
+	<TextView android:id="@id/android:empty"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_weight="1" android:gravity="center" android:text="@string/msg_NoClient" />
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:layout_weight="0" android:gravity="top"
+		android:background="@drawable/list_bar"
+		android:paddingTop="2px"
+		android:paddingBottom="2px">
+			<LinearLayout
+				android:layout_width="wrap_content"	android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:layout_weight="1"
+				android:padding="3dp">
+				<TextView android:id="@+id/tvMainInfoStr1"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:textColor="#FFFFFF" android:layout_marginRight="5px"/>
+				<TextView android:id="@+id/tvMainInfoStr2"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:textColor="#FFFFFF" android:layout_marginRight="5px"/>
+			</LinearLayout>
+</LinearLayout>
+</LinearLayout>
