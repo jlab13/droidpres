@@ -119,7 +119,7 @@ public class MainActivity extends ListActivity {
 		registerReceiver(mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
 		DecimalFormat nf = SetupRootActivity.getQtyFormat(this, getString(R.string.lb_qty));
-		DecimalFormat сf = SetupRootActivity.getCurrencyFormat(this);
+		DecimalFormat cf = SetupRootActivity.getCurrencyFormat(this);
 		mAgentID = SetupRootActivity.getAgentID(this).length() > 0;
 		if (!mAgentID) Utils.ToastMsg(this, R.string.err_NoSetAgentID);
 		SQLiteDatabase db = (new DBDroidPres(this)).Open();
@@ -129,7 +129,7 @@ public class MainActivity extends ListActivity {
 		((TextView)findViewById(R.id.tvMainInfoStr1)).setText(getString(R.string.lb_send_doc_count,
 				nf.format(cur.getInt(0))));
 		((TextView)findViewById(R.id.tvMainInfoStr2)).setText(getString(R.string.lb_send_doc_sum,
-				сf.format(cur.getFloat(1))));
+				cf.format(cur.getFloat(1))));
 		cur.close();
 		db.close();
 	}
