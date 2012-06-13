@@ -23,6 +23,6 @@
    		<Preference
       			android:key="@string/SETUP_ROOT" 
       			android:title="@string/lb_setup_root"
-      			android:summary="Требуеться авторизация"/> 
+      			android:summary="Требуется авторизация"/> 
 	</PreferenceCategory>
 </PreferenceScreen>
