@@ -12,7 +12,7 @@ package org.droidpres.activity;
 
 import java.util.List;
 
-import org.droidpres.db.DBDroidPres;
+import org.droidpres.db.DB;
 import org.droidpres.db.QueryHelper;
 import org.droidpres.utils.MenuItemInfo;
 
@@ -21,9 +21,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
 import android.view.Window;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 
@@ -57,7 +57,7 @@ public abstract class AbsListActivity extends ListActivity {
 		
 		setContentView(contentId);
 		
-		mDataBase = (new DBDroidPres(this)).getWritableDatabase();
+		mDataBase = DB.get().getWritableDatabase();
 		
 		Cursor cursor = createCursor();
 		if (cursor != null) {
@@ -71,23 +71,11 @@ public abstract class AbsListActivity extends ListActivity {
 	}
 	
 	protected abstract Cursor createCursor();
-
 	protected abstract CursorAdapter createAdapter(Cursor cursor);
-
-	@Override
-	protected void onDestroy() {
-		getCursor().close();
-		mDataBase.close();
-		super.onDestroy();
-	}
 	
 	public Cursor getCursor() {
 		if (mAdapter != null) return mAdapter.getCursor();
 		else return null;
-	}
-
-	public SQLiteDatabase getDb() {
-		return mDataBase;
 	}
 	
 	@Override

@@ -69,14 +69,30 @@
    			android:summary="@string/setup_nostartwithoutgps_summary"
    			android:dependency="@string/GPSLOCATION"
    			android:defaultValue="true"/>
-   		<ListPreference 
+        <ListPreference 
+            android:key="@string/GPSSCHEDULE"
+            android:title="@string/setup_schedule"
+            android:summary="@string/setup_schedule_desc"
+            android:entries="@array/list_schedule"
+            android:entryValues="@array/val_schedule" 
+            android:dependency="@string/GPSLOCATION"
+            android:defaultValue="15" />
+        <ListPreference 
+            android:key="@string/GPSTIMEOUT"
+            android:title="@string/setup_timeout"
+            android:summary="@string/setup_timeout_desc"
+            android:entries="@array/list_timeout"
+            android:entryValues="@array/val_timeout" 
+            android:dependency="@string/GPSLOCATION"
+            android:defaultValue="3" />
+        <ListPreference 
       		android:key="@string/GPSACCURACY"
       		android:title="@string/setup_gpsaccuracy"
    			android:summary="@string/setup_gpsaccuracy_summary"
-   			android:entries="@array/gpsAccuracy"
-   			android:entryValues="@array/gpsAccuracyValues" 
+   			android:entries="@array/list_gps_accuracy"
+   			android:entryValues="@array/val_gps_accuracy" 
    			android:dependency="@string/GPSLOCATION"
-   			android:defaultValue="50" />
+   			android:defaultValue="100" />
     </PreferenceCategory> 
 
 	<PreferenceCategory android:title="База данных"> 

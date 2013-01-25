@@ -14,7 +14,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 
 import org.droidpres.R;
-import org.droidpres.db.DBDroidPres;
+import org.droidpres.db.DB;
 import org.droidpres.utils.Utils;
 
 import android.content.Context;
@@ -42,20 +42,20 @@ public class SetupRootActivity extends PreferenceActivity{
 		super.onPreferenceTreeClick(preferenceScreen, preference);			
 
 		if (preference.getKey().equals("clean_ref")) {
-			SQLiteDatabase db = (new DBDroidPres(this)).Open();
-			db.execSQL("DELETE FROM " + DBDroidPres.TABLE_TYPEDOC);
-			db.execSQL("DELETE FROM " + DBDroidPres.TABLE_CLIENT);
-			db.execSQL("DELETE FROM " + DBDroidPres.TABLE_PRODUCT);
-			db.execSQL("DELETE FROM " + DBDroidPres.TABLE_CLIENT_GROUP);
-			db.execSQL("DELETE FROM " + DBDroidPres.TABLE_PRODUCT_GROUP);
-			db.execSQL("DELETE FROM " + DBDroidPres.TABLE_LOCATION);
+			SQLiteDatabase db = DB.get().getWritableDatabase();
+			db.execSQL("DELETE FROM " + DB.TABLE_TYPEDOC);
+			db.execSQL("DELETE FROM " + DB.TABLE_CLIENT);
+			db.execSQL("DELETE FROM " + DB.TABLE_PRODUCT);
+			db.execSQL("DELETE FROM " + DB.TABLE_CLIENT_GROUP);
+			db.execSQL("DELETE FROM " + DB.TABLE_PRODUCT_GROUP);
+			db.execSQL("DELETE FROM " + DB.TABLE_LOCATION);
 			db.close();
 			Utils.ToastMsg(this, "Справочники очищены.");
 			return true;
 		} else
 		if (preference.getKey().equals("clean_doc")) {
-			SQLiteDatabase db = (new DBDroidPres(this)).Open();
-			db.execSQL("DELETE FROM " + DBDroidPres.TABLE_DOCUMENT);
+			SQLiteDatabase db = DB.get().getWritableDatabase();
+			db.execSQL("DELETE FROM " + DB.TABLE_DOCUMENT);
 			db.close();
 			Utils.ToastMsg(this, "Документы удаленны.");
 			return true;
@@ -131,9 +131,19 @@ public class SetupRootActivity extends PreferenceActivity{
 		return sharedPreferences.getBoolean(context.getString(R.string.GPSLOCATION), true);
 	}
 	
+	public static int getGPSchedule(Context context) {
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+		return Integer.parseInt(sharedPreferences.getString(context.getString(R.string.GPSSCHEDULE), "15"));
+	}
+	
 	public static int getGPSAccuracy(Context context) {
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return Integer.parseInt(sharedPreferences.getString(context.getString(
-				R.string.GPSACCURACY), "0"));
+		return Integer.parseInt(sharedPreferences.getString(context.getString(R.string.GPSACCURACY), "100"));
 	}
+	
+	public static int getGPSTimeout(Context context) {
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+		return Integer.parseInt(sharedPreferences.getString(context.getString(R.string.GPSTIMEOUT), "3"));
+	}
+	
 }

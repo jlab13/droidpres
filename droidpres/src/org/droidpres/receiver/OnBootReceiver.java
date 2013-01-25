@@ -1,7 +1,6 @@
 package org.droidpres.receiver;
 
-import org.droidpres.activity.SetupRootActivity;
-import org.droidpres.service.LocationService;
+import org.droidpres.BaseApplication;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,9 +10,7 @@ public class OnBootReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if (SetupRootActivity.getIsGPSLocation(context)) {
-			context.startService(new Intent(context, LocationService.class));
-		}
+		BaseApplication.schedule(context);
 	}
 	
 }

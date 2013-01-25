@@ -10,17 +10,16 @@
  ******************************************************************************/
 package org.droidpres.db;
 
+import org.droidpres.BaseApplication;
 import org.droidpres.R;
 
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class DBDroidPres extends SQLiteOpenHelper {
+public class DB extends SQLiteOpenHelper {
 	private static final String DATABASE_NAME = "DroidPres.sqlite";
 	private static final int DATABASE_VERSION = 4;
-	private Context mContext;
 	
 	public static final String TABLE_CLIENT 		=	"client";
 	public static final String TABLE_CLIENT_GROUP	=	"client_group";
@@ -30,21 +29,30 @@ public class DBDroidPres extends SQLiteOpenHelper {
 	public static final String TABLE_DOCUMENT 		=	"document";
 	public static final String TABLE_DOCUMENT_DET	=	"document_det";
 	public static final String TABLE_LOCATION 		=	"location";
+	
+	private static DB sInstance;
 
-	public DBDroidPres(Context context) {
-		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		mContext = context;
+	public static DB get() {
+		if (sInstance == null) {
+			sInstance = new DB();
+		}
+		return sInstance;
+	}
+	
+	private DB() {
+		super(BaseApplication.getInstance(), DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		String[] ddl = mContext.getResources().getStringArray(R.array.ddl_of_database);
+		Log.d("DB onCreate", db.toString());
+		String[] ddl = BaseApplication.getInstance().getResources().getStringArray(R.array.ddl_of_database);
 		for (String ddl_txt: ddl) db.execSQL(ddl_txt);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int old_version, int new_version) {
-		Log.d("onUpgradeDB",String.format("New version: %d, Old version: %d", new_version, old_version));
+		Log.d("DB onUpgrade", String.format("New version: %d, Old version: %d", new_version, old_version));
 		if (old_version != new_version) {
 			if (old_version < 2) {
 				db.execSQL("DROP TABLE IF EXISTS " + TABLE_TYPEDOC);
@@ -57,9 +65,5 @@ public class DBDroidPres extends SQLiteOpenHelper {
 			}
 			onCreate(db);
 		}
-	}
-
-	public SQLiteDatabase Open() {
-		return getWritableDatabase();
 	}
 }

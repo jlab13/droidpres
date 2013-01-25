@@ -5,12 +5,13 @@ import java.text.DecimalFormat;
 import org.droidpres.R;
 import org.droidpres.activity.AbsListActivity;
 import org.droidpres.activity.SetupRootActivity;
-import org.droidpres.db.DBDroidPres;
+import org.droidpres.db.DB;
 import org.droidpres.db.QueryHelper;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.provider.BaseColumns;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,20 +28,18 @@ public class ClientInfoDialog {
 		this.parentActivity = parentActivity;
 		layoutInflater = LayoutInflater.from(parentActivity);
 		cf = SetupRootActivity.getCurrencyFormat(parentActivity);
-		
-//		setButton(DialogInterface.BUTTON_POSITIVE, parentActivity.getText(android.R.string.ok), new OnClickListener() {
-//			public void onClick(DialogInterface dialog, int which) {
-//				dismiss();
-//			}
-//		});
 	}
 	
 	public void show(long clientId) {
 		View v = layoutInflater.inflate(R.layout.client_info, null);
 		LinearLayout layout = (LinearLayout) v.findViewById(R.id.list);
 		
-		Cursor _cur = parentActivity.getDb().query(DBDroidPres.TABLE_CLIENT, null, "_id = " + clientId, null, null, null, null);
-		if (!_cur.moveToFirst()) return;
+		Cursor _cur = DB.get().getReadableDatabase().query(DB.TABLE_CLIENT, null, 
+				BaseColumns._ID + clientId, null, null, null, null);
+		if (!_cur.moveToFirst()) {
+			_cur.close();
+			return;
+		}
 		
 		String str;
 		Float ft;

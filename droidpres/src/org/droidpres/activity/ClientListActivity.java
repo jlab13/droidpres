@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.droidpres.R;
 import org.droidpres.adapter.ClientListAdapter;
-import org.droidpres.db.DBDroidPres;
+import org.droidpres.db.DB;
 import org.droidpres.db.QueryHelper;
 import org.droidpres.dialog.ClientInfoDialog;
 import org.droidpres.dialog.DocHead;
@@ -55,9 +55,9 @@ public class ClientListActivity extends AbsListActivity implements FilterQueryPr
 	private Bundle mDocParams = new Bundle();
 	
 	public ClientListActivity() {
-		super(R.layout.client_list, DBDroidPres.TABLE_CLIENT,
+		super(R.layout.client_list, DB.TABLE_CLIENT,
 				new String[] {"_id", "name", "address", "(select count(*) from document\n" +
-					"where docstate <> 2 and client_id = "+DBDroidPres.TABLE_CLIENT+"._id) doc_count"},
+					"where docstate <> 2 and client_id = "+DB.TABLE_CLIENT+"._id) doc_count"},
 				"name");
 	}
 

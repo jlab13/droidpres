@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.droidpres.R;
 import org.droidpres.adapter.ProductListAdapter;
-import org.droidpres.db.DBDroidPres;
+import org.droidpres.db.DB;
 import org.droidpres.db.QueryHelper;
 import org.droidpres.dialog.DocHead;
 import org.droidpres.utils.Const;
@@ -70,7 +70,7 @@ public class ProductListActivity extends AbsListActivity implements FilterQueryP
 	private float mOldQty = 1;
 
 	public ProductListActivity() {
-		super(R.layout.product_list, DBDroidPres.TABLE_PRODUCT,
+		super(R.layout.product_list, DB.TABLE_PRODUCT,
 				new String[] {"_id", "name", "available", "price", "casesize", "productgroup_id"},
 				"sortorder");
 	}
@@ -308,7 +308,7 @@ public class ProductListActivity extends AbsListActivity implements FilterQueryP
 	
 		case DLG_PRODUCT_GROUP: // Диалог группы товара
 			Cursor cursor = mDataBase.rawQuery("select _id, name from " +
-					DBDroidPres.TABLE_PRODUCT_GROUP + "\n" +
+					DB.TABLE_PRODUCT_GROUP + "\n" +
 					"where _id in (select distinct productgroup_id from product) order by name", null);
 	
 			final CharSequence[] names = new CharSequence[cursor.getCount()+1];  
@@ -404,7 +404,7 @@ public class ProductListActivity extends AbsListActivity implements FilterQueryP
 
 	private void SaveDocument(int doc_state) {
 		ProductListAdapter adp = (ProductListAdapter) mAdapter; 
-		Cursor cur_type_doc = QueryHelper.createCurcorOneRecord(DBDroidPres.TABLE_TYPEDOC, mDataBase,
+		Cursor cur_type_doc = QueryHelper.createCurcorOneRecord(DB.TABLE_TYPEDOC, mDataBase,
 				mActivityExtras.getInt(Const.EXTRA_DOC_TYPE, 0), "paytype", "days");
 	
 		Calendar cl = Calendar.getInstance();
@@ -427,12 +427,12 @@ public class ProductListActivity extends AbsListActivity implements FilterQueryP
 		long _id = 0;
 		if (! mDocNewFlag) {
 			_id = mActivityExtras.getLong(Const.EXTRA_DOC_ID);
-			mDataBase.update(DBDroidPres.TABLE_DOCUMENT, cval, QueryHelper.KEY_ID + "=" + _id, null);
-		} else	_id = mDataBase.insert(DBDroidPres.TABLE_DOCUMENT, null, cval);
+			mDataBase.update(DB.TABLE_DOCUMENT, cval, QueryHelper.KEY_ID + "=" + _id, null);
+		} else	_id = mDataBase.insert(DB.TABLE_DOCUMENT, null, cval);
 	
 		if (_id > 0) {
 			if (! mDocNewFlag)
-				mDataBase.delete(DBDroidPres.TABLE_DOCUMENT_DET, "document_id = " + _id, null);
+				mDataBase.delete(DB.TABLE_DOCUMENT_DET, "document_id = " + _id, null);
 			adp.mDocData.Save(_id, mDataBase);
 		}
 	

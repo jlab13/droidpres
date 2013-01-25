@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.droidpres.R;
 import org.droidpres.adapter.DocumentListAdapter;
-import org.droidpres.db.DBDroidPres;
+import org.droidpres.db.DB;
 import org.droidpres.db.QueryHelper;
 import org.droidpres.utils.Const;
 import org.droidpres.utils.MenuItemInfo;
@@ -42,7 +42,7 @@ public class DocumentListActivity extends AbsListActivity {
 	private Bundle mActivityExtras;
 	
 	public DocumentListActivity() {
-		super(R.layout.document_list, DBDroidPres.TABLE_DOCUMENT,
+		super(R.layout.document_list, DB.TABLE_DOCUMENT,
 				new String[] {"_id", "docdate", "mainsumm", "presventype", "typedoc_id",
 				"description", "docstate"},
 				"docdate");
@@ -116,7 +116,7 @@ public class DocumentListActivity extends AbsListActivity {
 				editDoc(mi.position, mi.id);
 				return true;
 			case MENU_DELETE: 
-				mDataBase.delete(DBDroidPres.TABLE_DOCUMENT,
+				mDataBase.delete(DB.TABLE_DOCUMENT,
 						QueryHelper.KEY_ID + "=" + mi.id, null);
 				requeryCursor();
 				return true;
@@ -144,7 +144,7 @@ public class DocumentListActivity extends AbsListActivity {
 	private void changeStatus(long id, int status) {
 		ContentValues cval = new ContentValues();
 		cval.put("docstate", status);
-		mDataBase.update(DBDroidPres.TABLE_DOCUMENT, cval,	QueryHelper.KEY_ID + "=" + id, null);
+		mDataBase.update(DB.TABLE_DOCUMENT, cval,	QueryHelper.KEY_ID + "=" + id, null);
 		requeryCursor();
 	}
 	

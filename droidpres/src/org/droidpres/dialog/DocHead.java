@@ -13,7 +13,7 @@ package org.droidpres.dialog;
 import java.util.ArrayList;
 
 import org.droidpres.R;
-import org.droidpres.db.DBDroidPres;
+import org.droidpres.db.DB;
 import org.droidpres.db.SpinnerDB;
 
 import android.app.AlertDialog;
@@ -55,8 +55,8 @@ public class DocHead extends AlertDialog {
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		
-		SQLiteDatabase db = (new DBDroidPres(context)).Open();
-		Cursor cursor = db.query(DBDroidPres.TABLE_TYPEDOC, 
+		SQLiteDatabase db = DB.get().getReadableDatabase();
+		Cursor cursor = db.query(DB.TABLE_TYPEDOC, 
         		new String[] {"_id","name"}, null, null, null, null, null);
 		
 		if (cursor.moveToFirst())

@@ -14,9 +14,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.sql.Date;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +26,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.apache.http.conn.HttpHostConnectException;
+import org.droidpres.BaseApplication;
 import org.droidpres.R;
-import org.droidpres.db.DBDroidPres;
+import org.droidpres.db.DB;
 import org.droidpres.db.QueryHelper;
 import org.droidpres.utils.Const;
 import org.xmlrpc.android.XMLRPCClient;
@@ -64,21 +67,21 @@ public class TransferActivity extends Activity implements OnClickListener{
 	private static final int SERVER_MOBILE 		= 0; 
 	private static final int SERVER_WIFI 		= 1; 
 
-	private static DecimalFormat cf;
 
-	private SQLiteDatabase sDataBase;
-	private Integer sAgentId;
-	private boolean sWiFiFlag, sWiFiConnectFlag, sImportFlag, sStartTransferFlag;
-	private boolean sNewVersion = false;
-	private String sURL = "";
+	private SQLiteDatabase mDataBase;
+	private Integer mAgentId;
+	private boolean mWiFiFlag, mWiFiConnectFlag, mImportFlag, mStartTransferFlag;
+	private boolean isNewVersion = false;
+	private String mURL;
 
-	private TextView sTvTrLog;
-	private Button sBtExport, sBtImport;
-	private Spinner sSpNetType;
-	private XMLRPCClient sClientXMLRPC;
-	private WiFiStateReceiver sWifiStateReceiver;
-	private WifiManager sWiFiManager;
-	private IntentFilter sFilter;
+	private TextView mTvTrLog;
+	private Button mBtExport, mBtImport;
+	private Spinner mSpNetType;
+	private XMLRPCClient mClientXMLRPC;
+	private WiFiStateReceiver mWifiStateReceiver;
+	private WifiManager mWiFiManager;
+	private IntentFilter mFilter;
+	private DecimalFormat cf;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,59 +91,59 @@ public class TransferActivity extends Activity implements OnClickListener{
 
         cf = SetupRootActivity.getCurrencyFormat(this);
 		
-        sBtExport = (Button) findViewById(R.id.btExport);
-		sBtImport = (Button) findViewById(R.id.btImport);
-        sTvTrLog = (TextView) findViewById(R.id.tvTransferLog);
-        sSpNetType = (Spinner) findViewById(R.id.spNetType);
+        mBtExport = (Button) findViewById(R.id.btExport);
+		mBtImport = (Button) findViewById(R.id.btImport);
+        mTvTrLog = (TextView) findViewById(R.id.tvTransferLog);
+        mSpNetType = (Spinner) findViewById(R.id.spNetType);
 
-        sBtImport.setOnClickListener(this);
-        sBtExport.setOnClickListener(this);
+        mBtImport.setOnClickListener(this);
+        mBtExport.setOnClickListener(this);
         
-        sDataBase = (new DBDroidPres(this)).Open();
+        mDataBase = DB.get().getWritableDatabase();
         
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
         		R.array.itemNetType, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sSpNetType.setAdapter(adapter);
+        mSpNetType.setAdapter(adapter);
         
-        sAgentId = Integer.parseInt(SetupRootActivity.getAgentID(this));
+        mAgentId = Integer.parseInt(SetupRootActivity.getAgentID(this));
 	}
 	
 	public void onClick(View v) {
-		sTvTrLog.setText("");
+		mTvTrLog.setText("");
 
-		switch (sSpNetType.getSelectedItemPosition()) {
+		switch (mSpNetType.getSelectedItemPosition()) {
 		case SERVER_MOBILE:
-			sURL = SetupRootActivity.getMobileServer(this);
-			if (sURL.trim().length() == 0) {
+			mURL = SetupRootActivity.getMobileServer(this);
+			if (mURL.trim().length() == 0) {
 				log(getString(R.string.err_ServerPort), "No setup url transfer server.");
 				return;
 			}
 			setGuiEnabled(false);
 
-			if (sURL.toLowerCase().indexOf("http://") < 0)
-				sURL = "http://" + sURL + Const.RPC_PATH; 
+			if (mURL.toLowerCase().indexOf("http://") < 0)
+				mURL = "http://" + mURL + Const.RPC_PATH; 
 				
 			if (v.getId() == R.id.btImport)
-				new ImportFromRCD().execute(sURL);
+				new ImportFromRCD().execute(mURL);
 			else
-				new ExportToRCD().execute(sURL);
+				new ExportToRCD().execute(mURL);
 			break;
 
 		case SERVER_WIFI:
-			sURL = SetupRootActivity.getWiFiServer(this);
-			if (sURL.trim().length() == 0) {
+			mURL = SetupRootActivity.getWiFiServer(this);
+			if (mURL.trim().length() == 0) {
 				log(getString(R.string.err_ServerPort), "No setup url transfer server.");
 				return;
 			}
 			setGuiEnabled(false);
 
-			if (sURL.toLowerCase().indexOf("http://") < 0)
-				sURL = "http://" + sURL + Const.RPC_PATH; 
+			if (mURL.toLowerCase().indexOf("http://") < 0)
+				mURL = "http://" + mURL + Const.RPC_PATH; 
 
-			sImportFlag = v.getId() == R.id.btImport;
+			mImportFlag = v.getId() == R.id.btImport;
 
-			sWiFiFlag = true;
+			mWiFiFlag = true;
 			swichWiFi();
 		}
 	}
@@ -153,43 +156,43 @@ public class TransferActivity extends Activity implements OnClickListener{
 
 	@Override
 	protected void onDestroy() {
-		sDataBase.close();
+		mDataBase.close();
 		super.onDestroy();
 	}
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN &&
-				sStartTransferFlag)	return true;
+				mStartTransferFlag)	return true;
 		else return super.onKeyDown(keyCode, event);
 	}
 
 	private void setBtExportEnable() {
-		Cursor cur = sDataBase.rawQuery("select count(*) + (select count(*) from " + 
-				DBDroidPres.TABLE_LOCATION +") from " +
-				DBDroidPres.TABLE_DOCUMENT + " where docstate = " +
+		Cursor cur = mDataBase.rawQuery("select count(*) + (select count(*) from " + 
+				DB.TABLE_LOCATION +") from " +
+				DB.TABLE_DOCUMENT + " where docstate = " +
 				Const.DOCSTATE_PREPARE_SEND, null);
 		if (cur.moveToFirst()) {
 			boolean flag = cur.getInt(0) > 0;
-			sBtExport.setEnabled(flag);
+			mBtExport.setEnabled(flag);
 		} else {
-			sBtExport.setEnabled(false);
+			mBtExport.setEnabled(false);
 		}
 		cur.close();
 	}
 
 	private void setGuiEnabled(boolean flag) {
-		if (!flag) sBtExport.setEnabled(false);
+		if (!flag) mBtExport.setEnabled(false);
 		else setBtExportEnable();
-		sBtImport.setEnabled(flag);
-	    sSpNetType.setEnabled(flag);
+		mBtImport.setEnabled(flag);
+	    mSpNetType.setEnabled(flag);
 	}
 
 	private void log(String msg, String error) {
 		if (error == null) {
-			sTvTrLog.append(msg+"\n");
+			mTvTrLog.append(msg+"\n");
 		} else {
-			sTvTrLog.append("\nERROR: "+error+"\n\n");
+			mTvTrLog.append("\nERROR: "+error+"\n\n");
 			new AlertDialog.Builder(this)
 			.setMessage(msg)
 			.setTitle(android.R.string.dialog_alert_title)
@@ -207,15 +210,15 @@ public class TransferActivity extends Activity implements OnClickListener{
 				
 				int send_doc_coun = 0;
 				Cursor cur_docdet = null;
-				Cursor cur_doc = sDataBase.rawQuery("select d.*, c.name, t.paytype1or2 " +
+				Cursor cur_doc = mDataBase.rawQuery("select d.*, c.name, t.paytype1or2 " +
 						"from document d inner join typedoc t on (t._id = d.typedoc_id) " +
 						"inner join client c on (c._id = d.client_id) " +
 						"where docstate = " + Const.DOCSTATE_PREPARE_SEND , null);
 				
-				sClientXMLRPC = new XMLRPCClient(params[0], SetupRootActivity.getHttpLogin(
+				mClientXMLRPC = new XMLRPCClient(params[0], SetupRootActivity.getHttpLogin(
 						TransferActivity.this),	SetupRootActivity.getHttpPasswd(TransferActivity.this));
 
-				QueryHelper qh_docdet = new QueryHelper(DBDroidPres.TABLE_DOCUMENT_DET, null); 
+				QueryHelper qh_docdet = new QueryHelper(DB.TABLE_DOCUMENT_DET, null); 
 				//DataSet dsDocDet = new DataSet(sDataBase, DBDroidPres.TABLE_DOCUMENT_DET);
 				Integer central_id = 0;
 
@@ -226,7 +229,7 @@ public class TransferActivity extends Activity implements OnClickListener{
 						final long _id = QueryHelper.fieldByNameLong(cur_doc, QueryHelper.KEY_ID);
 						dict.clear();
 						dict.put("_id", _id);
-						dict.put("agent_id", sAgentId);
+						dict.put("agent_id", mAgentId);
 						dict.put("presventype",  QueryHelper.fieldByNameInt(cur_doc, "presventype"));
 						dict.put("client_id", QueryHelper.fieldByNameInt(cur_doc, "client_id"));
 						dict.put("docdate", QueryHelper.fieldByNameString(cur_doc, "docdate"));
@@ -243,7 +246,7 @@ public class TransferActivity extends Activity implements OnClickListener{
 						items.clear();
 						qh_docdet.appendFilter("DOCUMENT_ID", QueryHelper.FILTER_AND, "document_id = %d", _id);
 						if (cur_docdet != null) cur_docdet.close();
-						cur_docdet = qh_docdet.createCurcor(sDataBase);
+						cur_docdet = qh_docdet.createCurcor(mDataBase);
 						if (cur_docdet.moveToFirst()) {
 							do {
 								Map<String, Object> mapDocDet = new HashMap<String, Object>();
@@ -254,7 +257,7 @@ public class TransferActivity extends Activity implements OnClickListener{
 							} while (cur_docdet.moveToNext());
 
 							Object[] XMLRPCDocParams = {dict, items};
-							central_id = (Integer) sClientXMLRPC.callEx("SetDoc", XMLRPCDocParams);
+							central_id = (Integer) mClientXMLRPC.callEx("SetDoc", XMLRPCDocParams);
 							publishProgress(QueryHelper.fieldByNameString(cur_doc, "name") + " " +
 									QueryHelper.fieldByNameString(cur_doc, "docdate") + " " +
 									cf.format(QueryHelper.fieldByNameFloat(cur_doc, "mainsumm")) , null);
@@ -263,7 +266,7 @@ public class TransferActivity extends Activity implements OnClickListener{
 								ContentValues values = new ContentValues();
 								values.put("docstate", 2);
 								values.put("central_id", central_id);
-								sDataBase.update(DBDroidPres.TABLE_DOCUMENT, values,
+								mDataBase.update(DB.TABLE_DOCUMENT, values,
 										QueryHelper.KEY_ID + " = " + _id, null);
 								send_doc_coun++;
 							}
@@ -274,7 +277,7 @@ public class TransferActivity extends Activity implements OnClickListener{
 					dict.clear();
 					items.clear();
 					
-					final Cursor cur = sDataBase.query(DBDroidPres.TABLE_LOCATION, null, null, null,
+					final Cursor cur = mDataBase.query(DB.TABLE_LOCATION, null, null, null,
 							null, null, null);
 					if (cur.moveToFirst()) do {
 						Map<String, Object> row = new HashMap<String, Object>();
@@ -286,16 +289,16 @@ public class TransferActivity extends Activity implements OnClickListener{
 						items.add(row);
 					} while (cur.moveToNext());
 					cur.close();
-					Object result = sClientXMLRPC.call("SetLocation", sAgentId, items);
+					Object result = mClientXMLRPC.call("SetLocation", mAgentId, items);
 					items.clear();
 					if ((Boolean)result) {
-						sDataBase.delete(DBDroidPres.TABLE_LOCATION, null, null);
+						mDataBase.delete(DB.TABLE_LOCATION, null, null);
 					}
 					
 				}
 				publishProgress(getString(R.string.msg_StopExport) , null);
 				publishProgress(getString(R.string.msg_SendDocCount, send_doc_coun) , null);
-				
+				deleteOldRecords();
 			} catch (final XMLRPCFault e) {
 				Log.e("Transfer", "XMLRPCFault", e);
 				publishProgress(getString(R.string.err_XMLRPCFault), e.getMessage());
@@ -327,16 +330,16 @@ public class TransferActivity extends Activity implements OnClickListener{
 		protected void onPreExecute() {
 			super.onPreExecute();
 			setProgressBarIndeterminateVisibility(true);
-			sStartTransferFlag = true;
+			mStartTransferFlag = true;
 		}
 
 		@Override
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
 			setProgressBarIndeterminateVisibility(false);
-			sStartTransferFlag = false;
-			if (sSpNetType.getSelectedItemPosition() == SERVER_WIFI) {
-				sWiFiFlag = false;
+			mStartTransferFlag = false;
+			if (mSpNetType.getSelectedItemPosition() == SERVER_WIFI) {
+				mWiFiFlag = false;
 				swichWiFi();
 			}
 			setGuiEnabled(true);
@@ -348,21 +351,22 @@ public class TransferActivity extends Activity implements OnClickListener{
 		protected Void doInBackground(String... params) {
 			try {
 				publishProgress(getString(R.string.msg_StartImport, params[0]), null);
-				sClientXMLRPC = new XMLRPCClient(params[0], SetupRootActivity.getHttpLogin(
+				mClientXMLRPC = new XMLRPCClient(params[0], SetupRootActivity.getHttpLogin(
 						TransferActivity.this), SetupRootActivity.getHttpPasswd(TransferActivity.this));
 				publishProgress(getString(R.string.msg_GetRefClientGroup), null);
-				getReferenceFromRCD(sDataBase, DBDroidPres.TABLE_CLIENT_GROUP, "GetRefClientGroup");
+				getReferenceFromRCD(mDataBase, DB.TABLE_CLIENT_GROUP, "GetRefClientGroup");
 				publishProgress(getString(R.string.msg_GetRefClient), null);
-				getReferenceFromRCD(sDataBase, DBDroidPres.TABLE_CLIENT, "GetRefClient");
+				getReferenceFromRCD(mDataBase, DB.TABLE_CLIENT, "GetRefClient");
 				publishProgress(getString(R.string.msg_GetRefProductGroup), null);
-				getReferenceFromRCD(sDataBase, DBDroidPres.TABLE_PRODUCT_GROUP, "GetRefProductGroup");
+				getReferenceFromRCD(mDataBase, DB.TABLE_PRODUCT_GROUP, "GetRefProductGroup");
 				publishProgress(getString(R.string.msg_GetRefProduct), null);
-				getReferenceFromRCD(sDataBase, DBDroidPres.TABLE_PRODUCT, "GetRefProduct");
+				getReferenceFromRCD(mDataBase, DB.TABLE_PRODUCT, "GetRefProduct");
 				publishProgress(getString(R.string.msg_GetRefTypeDoc), null);
-				getReferenceFromRCD(sDataBase, DBDroidPres.TABLE_TYPEDOC, "GetRefTypeDoc");
+				getReferenceFromRCD(mDataBase, DB.TABLE_TYPEDOC, "GetRefTypeDoc");
 				publishProgress(getString(R.string.msg_StopImport), null);
-				sNewVersion = getUppdateApp();
-
+				isNewVersion = getUppdateApp();
+				
+				deleteOldRecords();
 			} catch (final XMLRPCFault e) {
 				Log.e("ImportFromRCD", "XMLRPCFault", e);
 				publishProgress(getString(R.string.err_XMLRPCFault), e.toString());
@@ -388,7 +392,6 @@ public class TransferActivity extends Activity implements OnClickListener{
 				Log.e("ImportFromRCD", "UnknownException", e);
 				publishProgress(getString(R.string.err_UnknownException), e.toString());
 			}
-
 			return null;
 		}
 		
@@ -401,27 +404,27 @@ public class TransferActivity extends Activity implements OnClickListener{
 		protected void onPreExecute() {
 			super.onPreExecute();
 			setProgressBarIndeterminateVisibility(true);
-			sStartTransferFlag = true;
+			mStartTransferFlag = true;
 		}
 
 		@Override
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
 			setProgressBarIndeterminateVisibility(false);
-			sStartTransferFlag = false;
-			if (sSpNetType.getSelectedItemPosition() == SERVER_WIFI) {
-				sWiFiFlag = false;
+			mStartTransferFlag = false;
+			if (mSpNetType.getSelectedItemPosition() == SERVER_WIFI) {
+				mWiFiFlag = false;
 				swichWiFi();
 			}
 			setGuiEnabled(true);
-			if (sNewVersion) updateApp();
+			if (isNewVersion) updateApp();
 		}
 
 		@SuppressWarnings("unchecked")
 		private void getReferenceFromRCD(SQLiteDatabase db, String table_name,
 				String method_name) throws Exception {
-			final Object[] params = {sAgentId};
-			final Object result = sClientXMLRPC.callEx(method_name, params);
+			final Object[] params = {mAgentId};
+			final Object result = mClientXMLRPC.callEx(method_name, params);
 			final Object[] arr = (Object[]) result;
 			
 			publishProgress(getString(R.string.msg_ReturNRecords, arr.length), null);
@@ -433,7 +436,6 @@ public class TransferActivity extends Activity implements OnClickListener{
 
 			db.execSQL("delete from " + table_name);
 			InsertHelper ih = new InsertHelper(db, table_name);
-			//ContentValues values = new ContentValues();
 
 			int processedCount = 0;
 			for (int row = 0; row < arr.length; row++) {
@@ -443,19 +445,14 @@ public class TransferActivity extends Activity implements OnClickListener{
 					final String _key = key.toLowerCase();
 					
 					if (Arrays.binarySearch(fields, _key) >= 0) {   
-						//values.put(_key, map.get(key).toString());
 						ih.bind(ih.getColumnIndex(_key) , map.get(key).toString());
 					}
 					
-					//TODO: Временно
 					if (_key.equals("name") && (Arrays.binarySearch(fields, "name_case") >= 0)) {
-						//values.put("name_case", map.get(key).toString().toUpperCase());
 						ih.bind(ih.getColumnIndex("name_case") , map.get(key).toString().toUpperCase());
 					}
 				}
 				ih.execute();
-				//db.insert(table_name, null, values);
-				//values.clear();
 				processedCount++;
 			}
 			ih.close();
@@ -464,8 +461,7 @@ public class TransferActivity extends Activity implements OnClickListener{
 		
 		
 		private boolean getUppdateApp() throws XMLRPCException, IOException {
-			byte[] data = (byte[]) sClientXMLRPC.callEx("GetUpdateApp", 
-					new Object[] {MainActivity.versionCode});
+			byte[] data = (byte[]) mClientXMLRPC.callEx("GetUpdateApp", new Object[] {BaseApplication.VERSION_CODE});
 			if (data.length > 1) {
 				File apkFile = new File(SetupRootActivity.getApkFileName());
 				apkFile.createNewFile();
@@ -480,29 +476,29 @@ public class TransferActivity extends Activity implements OnClickListener{
 	}
 	
 	public void swichWiFi() {
-		sWiFiConnectFlag = false;
+		mWiFiConnectFlag = false;
 		
-		IntentFilter filter = sFilter;
-		WiFiStateReceiver receiver = sWifiStateReceiver;
+		IntentFilter filter = mFilter;
+		WiFiStateReceiver receiver = mWifiStateReceiver;
 		if (receiver == null) {
 			receiver = new WiFiStateReceiver();
-			sWifiStateReceiver = receiver;
+			mWifiStateReceiver = receiver;
 			filter = new IntentFilter();
 			filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
 			filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-			sFilter = filter;
+			mFilter = filter;
 		}
 		this.registerReceiver(receiver, filter);
-		getWiFiManager().setWifiEnabled(sWiFiFlag);
+		getWiFiManager().setWifiEnabled(mWiFiFlag);
 		
-		if (sWiFiFlag) {
+		if (mWiFiFlag) {
 			new Timer().schedule(new TimerTask() {
 				
 				@Override
 				public void run() {
-					if (!sWiFiConnectFlag) {
-						sWiFiFlag = false;
-						getWiFiManager().setWifiEnabled(sWiFiFlag);
+					if (!mWiFiConnectFlag) {
+						mWiFiFlag = false;
+						getWiFiManager().setWifiEnabled(mWiFiFlag);
 					}
 				}
 			}, 90000);
@@ -555,15 +551,15 @@ public class TransferActivity extends Activity implements OnClickListener{
 						log(getString(R.string.msg_NetworkState_FAILED), null);
 						break;
 					case CONNECTED:
-						sWiFiConnectFlag = true;
+						mWiFiConnectFlag = true;
 						log(getString(R.string.msg_NetworkState_CONNECTED, 
 								getWiFiManager().getConnectionInfo().getSSID()), null);
 
-						if (sWiFiFlag && !sStartTransferFlag) { 
-							if (sImportFlag)
-								new ImportFromRCD().execute(sURL);
+						if (mWiFiFlag && !mStartTransferFlag) { 
+							if (mImportFlag)
+								new ImportFromRCD().execute(mURL);
 							else
-								new ExportToRCD().execute(sURL);
+								new ExportToRCD().execute(mURL);
 						}
 						break;
 				}
@@ -572,10 +568,10 @@ public class TransferActivity extends Activity implements OnClickListener{
 	}
 	
 	private WifiManager getWiFiManager() {
-		if (sWiFiManager == null) {
-			sWiFiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		if (mWiFiManager == null) {
+			mWiFiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		}
-		return sWiFiManager;
+		return mWiFiManager;
 	}
 	
 	private void updateApp() {
@@ -592,5 +588,15 @@ public class TransferActivity extends Activity implements OnClickListener{
 			}
 		})
 		.setCancelable(false).show();
+	}
+	
+	
+	private void deleteOldRecords() {
+		Calendar cl = Calendar.getInstance();
+		cl.add(Calendar.DAY_OF_MONTH, -30);
+		Date sqlDate = new Date(cl.getTime().getTime());
+		
+		mDataBase.execSQL("delete from document where docstate = ? and docdate < ?",
+				new Object[] {Const.DOCSTATE_SEND, sqlDate.toString()});
 	}
 }

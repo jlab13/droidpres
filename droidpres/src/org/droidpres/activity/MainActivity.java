@@ -10,18 +10,14 @@
  ******************************************************************************/
 package org.droidpres.activity;
 
-import java.sql.Date;
 import java.text.DecimalFormat;
-import java.util.Calendar;
-import java.util.List;
 
+import org.droidpres.BaseApplication;
 import org.droidpres.R;
-import org.droidpres.db.DBDroidPres;
+import org.droidpres.db.DB;
 import org.droidpres.service.LocationService;
-import org.droidpres.utils.Const;
 import org.droidpres.utils.Utils;
 
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.BroadcastReceiver;
@@ -29,14 +25,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,19 +39,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainActivity extends ListActivity {
-	private static final int MSG_SETUP = 1;
-	private static final int MENU_SETUP = Menu.FIRST;
+	private static final int MSG_SETUP				= 1;
+	
+	private static final int MENU_SETUP				= Menu.FIRST;
 
-	private final static int MAINLIST_NEWDOCUMENT		= 0;
+	private final static int MAINLIST_NEWDOCUMENT	= 0;
 	private final static int MAINLIST_TRANSFER		= 1;
-	private final static int MAINLIST_REPORTS			= 2;
+	private final static int MAINLIST_REPORTS		= 2;
 	private final static int MAINLIST_PHONE			= 3;
 	
-	public static int versionCode;
-	private static int mAccuracy;
-	public static String versionName;
-	public static String appName;
-
 	private boolean mAgentID = false;
 	private boolean mCustomTitleFlag;
 	
@@ -69,27 +58,10 @@ public class MainActivity extends ListActivity {
         mCustomTitleFlag = requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.main_list);
         
-        onLocationServece(false);
-        
-        PackageInfo pi;
-		try {
-			pi = getPackageManager().getPackageInfo("org.droidpres", 0);
-			versionCode = pi.versionCode;
-			versionName = pi.versionName;
-		} catch (NameNotFoundException e) { }
-		appName = getString(R.string.app_name);
-        
-        setListAdapter(ArrayAdapter.createFromResource(this, R.array.itemMain,
+        setListAdapter(ArrayAdapter.createFromResource(this, R.array.itemMain, 
         		android.R.layout.simple_list_item_1));
 		
-		Calendar cl = Calendar.getInstance();
-		cl.add(Calendar.DAY_OF_MONTH, -30);
-		Date sqlDate = new Date(cl.getTime().getTime());
-		
-		SQLiteDatabase db = (new DBDroidPres(this)).Open();
-		db.execSQL("delete from document where docstate = ? and docdate < ?",
-				new Object[] {Const.DOCSTATE_SEND, sqlDate.toString()});
-		db.close();
+		checkGPS();
     }
 	
 	@Override
@@ -105,6 +77,8 @@ public class MainActivity extends ListActivity {
 
 		case MAINLIST_REPORTS:
 			Utils.ToastMsg(this, "В разработке");
+			
+			startService(new Intent(this, LocationService.class));
 			break;
 
 		case MAINLIST_PHONE:
@@ -122,7 +96,7 @@ public class MainActivity extends ListActivity {
 		DecimalFormat cf = SetupRootActivity.getCurrencyFormat(this);
 		mAgentID = SetupRootActivity.getAgentID(this).length() > 0;
 		if (!mAgentID) Utils.ToastMsg(this, R.string.err_NoSetAgentID);
-		SQLiteDatabase db = (new DBDroidPres(this)).Open();
+		SQLiteDatabase db = DB.get().getReadableDatabase();
 		Cursor cur = db.rawQuery("select distinct count(_id), sum(mainsumm) from document\n"+
 				"where docstate = 2 and docdate = current_date", null);
 		cur.moveToFirst();
@@ -153,7 +127,6 @@ public class MainActivity extends ListActivity {
 		super.onOptionsItemSelected(item);
 		switch (item.getItemId()) {
 		case (MENU_SETUP):
-			mAccuracy = SetupRootActivity.getGPSAccuracy(getBaseContext());
 			startActivityForResult(new Intent(MainActivity.this, SetupActivity.class), MSG_SETUP);
 			return true;
 		}
@@ -163,8 +136,9 @@ public class MainActivity extends ListActivity {
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		checkGPS();
 		if (requestCode == MSG_SETUP) {
-			onLocationServece(mAccuracy != SetupRootActivity.getGPSAccuracy(getBaseContext()));
+			BaseApplication.schedule(this);
 		}
 	}
 
@@ -201,43 +175,12 @@ public class MainActivity extends ListActivity {
 				.show();
 		}
 	}
-	
-	private void onLocationServece(boolean change_accuracy) {
-		boolean is_start = false;
-		
-		if (change_accuracy) {
-			stopService(new Intent(this, LocationService.class));
-			is_start = false;
-		} else {
-			ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-	        List<ActivityManager.RunningServiceInfo> services = activityManager.getRunningServices(Integer.MAX_VALUE);
-	        for (ActivityManager.RunningServiceInfo service : services) {
-	            if (".service.LocationService".equals(service.service.getShortClassName())) {
-	            	is_start = true;
-	            	break;
-	            }
-	        }
-		}
-
-		if (SetupRootActivity.getIsGPSLocation(this)) {
-			checkGPS();
-			
-			if (!is_start) {
-				Log.i("LOCATION", "Start intent location service.");
-				startService(new Intent(this, LocationService.class));
-			}
-		} else {
-			if (is_start) stopService(new Intent(this, LocationService.class));
-		}
-	}
     
 	private BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver(){
 		@Override
-	    public void onReceive(Context arg0, Intent intent) {
-			int level = intent.getIntExtra("level", 0);
-			customTitleBar(appName + " v" + versionName + "." + versionCode, "Заряд: " +
-					String.valueOf(level) + "%");
+	    public void onReceive(Context pContext, Intent intent) {
+			customTitleBar(String.format("%s v%s", getString(R.string.app_name),BaseApplication.FULL_VERSION),
+					String.format("Заряд: %d%%", intent.getIntExtra("level", 0)));
 	    }
 	};
-    
 }

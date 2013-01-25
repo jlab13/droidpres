@@ -35,18 +35,55 @@
 		<item>Отправлен</item>
 	</string-array>
 	
-	<string-array name="gpsAccuracy">
-		<item>Низкая</item>
-		<item>Средняя</item>
-		<item>Высокая</item>
+    <string-array name="list_schedule">
+        <item>5 минут</item>
+        <item>10 минут</item>
+        <item>15 минут</item>
+        <item>20 минут</item>
+        <item>30 минут</item>
+        <item>1 час</item>
+    </string-array>
+    
+    <string-array name="val_schedule">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>30</item>
+        <item>60</item>
+    </string-array>
+    
+    <string-array name="val_timeout">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    
+    <string-array name="list_timeout">
+        <item>2 минуты</item>
+        <item>3 минуты</item>
+        <item>4 минуты</item>
+    </string-array>    
+	
+	<string-array name="list_gps_accuracy">
+        <item>1км.</item>
+		<item>500м.</item>
+		<item>300м.</item>
+        <item>200м.</item>
+        <item>100м.</item>
+        <item>50м.</item>
+		<item>20м.</item>
 	</string-array>
 
-	<string-array name="gpsAccuracyValues">
-		<item>300</item>
-		<item>50</item>
-		<item>20</item>
-	</string-array>
-	
+    <string-array name="val_gps_accuracy">
+        <item>1000</item>
+        <item>500</item>
+        <item>300</item>
+        <item>200</item>
+        <item>100</item>
+        <item>50</item>
+        <item>20</item>
+    </string-array>
 
     <string name="ok">Да</string>
     <string name="cancel">Отмена</string>
@@ -95,7 +132,7 @@
     <string name="lb_doc_status_preparesend">Готов к отправке</string>
 	<string name="lb_on_gps">Включить GPS</string>
 	<string name="lb_gps_location">GPS Мониторинг</string>
-	
+		
 	<string name="lb_cl_id">Код</string>
 	<string name="lb_cl_debtsumm1">Задолженность по 1-й форме оплаты</string>
 	<string name="lb_cl_debtsumm2">Задолженность по 2-й форме оплаты</string>
@@ -121,10 +158,15 @@
     <string name="setup_http_passwd">Пароль обмена данными</string>
     <string name="setup_nostartwithoutgps">Не запускать без GPS</string>
     <string name="setup_nostartwithoutgps_summary">Запретить запуск программы если GPS выключен</string>
-    <string name="setup_gpslocation">Записать координаты GPS</string>
+    <string name="setup_gpslocation">Отслеживать координаты</string>
     <string name="setup_gpslocation_summary">Отслеживать перемещение устройства по GPS</string>
-    <string name="setup_gpsaccuracy">Точность GPS</string>
-    <string name="setup_gpsaccuracy_summary">Влияет на заряд батареи</string>
+    <string name="setup_gpsaccuracy">Точность</string>
+    <string name="setup_gpsaccuracy_summary">Точность при которой координата считается удовлетворительной.</string>
+    <string name="setup_schedule">Расписание</string>
+    <string name="setup_schedule_desc">Получение координат каждые N минут.</string>
+    <string name="setup_timeout">Тайм-аут</string>
+    <string name="setup_timeout_desc">Тайм-аут работы GPS</string>
+    
     
     <string name="msg_TransferDataPleaseWait">Обмен данными подождите пожалуйста!</string>
     <string name="msg_QyerySaveDocument">Данный документ не сохранен. Если Вы откажетесь документ будет безвозвратно утерян.\n\nСохранить документ?</string>
@@ -147,19 +189,18 @@
     <string name="msg_UpdateApk">Сейчас будет запущенно обновление программы. На вопросы установщика ответьте положительно и подтвердите установку.</string>
     <string name="msg_NoOnGPS">Запрещен запуск программы без включенного GPS.\nПерейти к настройкам?</string>
     
-    <string name="msg_WiFiState_DISABLING">Выключаю WiFi адаптер ...</string>
+    <string name="msg_WiFiState_DISABLING">Выключаю WiFi адаптер  &#8230;</string>
     <string name="msg_WiFiState_DISABLED">WiFi адаптер выключен</string>
-    <string name="msg_WiFiState_ENABLING">Включаю WiFi адаптер ...</string>
+    <string name="msg_WiFiState_ENABLING">Включаю WiFi адаптер  &#8230;</string>
     <string name="msg_WiFiState_ENABLED">WiFi адаптер включен</string>
     <string name="msg_WiFiState_UNKNOWN">Неизвестный статус WiFi адаптера</string>
 
-    <string name="msg_NetworkState_CONNECTING">Соединение ...</string>
-    <string name="msg_NetworkState_OBTAINING_IPADDR">Получаю IP адрес ...</string>
-    <string name="msg_NetworkState_DISCONNECTING">Отсоединение ...</string>
+    <string name="msg_NetworkState_CONNECTING">Соединение  &#8230;</string>
+    <string name="msg_NetworkState_OBTAINING_IPADDR">Получаю IP адрес  &#8230;</string>
+    <string name="msg_NetworkState_DISCONNECTING">Отсоединение  &#8230;</string>
     <string name="msg_NetworkState_DISCONNECTED">Отсоединен</string>
     <string name="msg_NetworkState_FAILED">Соединение не удалось</string>
     <string name="msg_NetworkState_CONNECTED">Соединен с %s</string>
-
     
     <string name="err_ErrorDBOpen">Не возможно открыть базу данных.</string>
     <string name="err_NumberFormatException">Ошибка преобразования числа.</string>

@@ -13,7 +13,7 @@ package org.droidpres.utils;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.droidpres.db.DBDroidPres;
+import org.droidpres.db.DB;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -116,7 +116,7 @@ public class DocData implements Parcelable {
 	}
 	
 	public void Load(long id, SQLiteDatabase db) {
-		Cursor cursor = db.query(DBDroidPres.TABLE_DOCUMENT_DET,
+		Cursor cursor = db.query(DB.TABLE_DOCUMENT_DET,
 				new String[] {"product_id", "qty", "price"},
 				"document_id = " + id, null, null, null, null);
 
@@ -137,7 +137,7 @@ public class DocData implements Parcelable {
 			_val.put("product_id", goodsID);
 			_val.put("qty", getQty(goodsID));
 			_val.put("price", getPrice(goodsID));
-			db.insert(DBDroidPres.TABLE_DOCUMENT_DET, null, _val);
+			db.insert(DB.TABLE_DOCUMENT_DET, null, _val);
 			_val.clear();
 		}
 	}
